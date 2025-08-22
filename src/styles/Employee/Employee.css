@@ -1,0 +1,20 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #ffffff; /* Fallback color */
+}
+
+.gradient-background {
+    background: linear-gradient(to right, #d0d0d0, #6e6e6e); /* Gradient background from neutral-300 to stone-400 */
+    min-height: 100vh; /* Ensure it covers the full height */
+    padding: 20px;
+    box-sizing: border-box; /* Ensure padding is included in the element’s total width and height */
+}
+
+.MuiPaper-root {  
+    color: #000; /* Black text */
+}

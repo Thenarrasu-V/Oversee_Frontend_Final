@@ -1,0 +1,20 @@
+.circular-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.MuiDrawer-paper {
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  color: #fff;
+}
+
+.MuiListItemText-root {
+  color: #fff;
+}
+
+.MuiListItemIcon-root {
+  color: #fff;
+}
