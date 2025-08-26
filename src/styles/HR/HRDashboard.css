@@ -2,93 +2,52 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh;
-  display: flex;
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+  background: #23243a;
+  color: white;
   overflow: hidden;
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #e0e0e0;
 }
 
-.sidebar {
-  background-color: #e0e0e0;
+/* Force all Cards and Paper transparent */
+.MuiPaper-root,
+.MuiCard-root {
+  border-radius: 16px !important;
+  background: transparent !important;
+  color: white !important;
+  border: none !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.main-content {
-  color: #000000;
-  background-color: #e0e0e0;
+/* Hover effect */
+.dashboard-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 12px 32px rgba(0, 255, 200, 0.35) !important; /* glowing cyan */
+  cursor: pointer;
 }
 
-h1, h2, p, blockquote {
-  color: black;
+/* Text inputs */
+.MuiFilledInput-root {
+  background-color: rgba(255,255,255,0.05) !important;
+  color: white !important;
+}
+.MuiInputBase-input,
+.MuiInputLabel-root {
+  color: white !important;
 }
 
-h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
-  text-align: center;
+/* Buttons */
+.MuiButton-root {
+  font-weight: bold !important;
 }
 
-h2 {
-  font-size: 20px;
-  margin-bottom: 10px;
+::-webkit-scrollbar {
+  width: 8px;
 }
-
-p {
-  font-size: 16px;
-  margin-bottom: 20px;
+::-webkit-scrollbar-track {
+  background: #212133;
 }
-
-blockquote {
-  font-style: italic;
-  border-left: 4px solid #ddd;
-  padding-left: 20px;
-  margin-left: 0;
-  margin-bottom: 20px;
-}
-
-.dashboard-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.dashboard-content {
-  display: flex;
-  flex: 1;
-  padding: 20px;
-  overflow: hidden;
-  justify-content: center;
-  align-items: center;
-}
-
-.dashboard-main-content {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 20px;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-  width: 80%;
-  place-items: center;
-  position: fixed;
-  left: 290px;
-}
-
-.flex-item {
-  padding: 15px;
-  width: 400px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-}
-
-@media (max-width: 768px) {
-  .dashboard-main-content {
-      grid-template-columns: 1fr;
-      grid-gap: 10px;
-  }
-
-  .flex-item {
-      margin: 0;
-  }
+::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 10px;
+  border: 2px solid #23243a;
 }

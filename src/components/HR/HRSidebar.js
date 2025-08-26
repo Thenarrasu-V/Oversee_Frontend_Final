@@ -9,7 +9,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Avatar from '@mui/material/Avatar';
-import LogoImg from '../../assets/Real Logo.png'; // Import the logo image
+import LogoImg from '../../assets/Real Logo.png'; 
 import HomeIcon from '@mui/icons-material/Home';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import ListIcon from '@mui/icons-material/List';
@@ -17,7 +17,7 @@ import AddIcon from '@mui/icons-material/Add';
 import FeedbackIcon from '@mui/icons-material/Feedback';
 import Button from '@mui/material/Button';
 import { useContext } from 'react';
-import { UserContext } from '../UserContext/UserContext'; // Adjust the import path as necessary
+import { UserContext } from '../UserContext/UserContext'; 
 
 const pages = [
   { name: 'Dashboard', icon: <HomeIcon />, link: '/hr/dashboard' },
@@ -31,8 +31,8 @@ const settings = ['Logout'];
 
 function HRTopNavBar() {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const navigate = useNavigate(); // Use useNavigate for programmatic navigation
-  const { setUser } = useContext(UserContext); // Get setUser function to update user context
+  const navigate = useNavigate(); 
+  const { setUser } = useContext(UserContext); 
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -43,24 +43,25 @@ function HRTopNavBar() {
   };
 
   const handleLogout = () => {
-    // Clear user data from context or local storage
-    setUser(null); // Clear the user context
-    // Navigate to sign-in page
+    setUser(null);
     navigate('/signin');
   };
 
   return (
     <AppBar
-      position="static"
+      position="fixed"
       sx={{
-        bgcolor: '#4d4d4d', // Set background color to black
-        color: 'white',  // Set text and icon color to white
+        background: 'rgba(77, 77, 77, 0.4)',  
+        backdropFilter: 'blur(12px)',         
+        WebkitBackdropFilter: 'blur(12px)',   
+        color: 'white',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
       }}
     >
       <Toolbar>
         <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
           <IconButton edge="start" color="inherit" aria-label="menu">
-            <img src={LogoImg} alt="Indus Logo" style={{ height: 80 }} /> {/* Increased logo size */}
+            <img src={LogoImg} alt="Indus Logo" style={{ height: 80 }} />
           </IconButton>
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', ml: 2 }}>
             {pages.map((page) => (
@@ -76,7 +77,8 @@ function HRTopNavBar() {
                     alignItems: 'center', 
                     mx: 1,
                     '&:hover': {
-                      bgcolor: 'rgba(255, 255, 255, 0.1)', // Optional: Add hover effect
+                      bgcolor: 'rgba(255, 255, 255, 0.15)',
+                      borderRadius: '8px',
                     }
                   }}
                 >
@@ -111,7 +113,10 @@ function HRTopNavBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={setting === 'Logout' ? handleLogout : handleCloseUserMenu}>
+                <MenuItem 
+                  key={setting} 
+                  onClick={setting === 'Logout' ? handleLogout : handleCloseUserMenu}
+                >
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
