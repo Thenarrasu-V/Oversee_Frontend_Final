@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Box, Typography, Paper, Grid, Card, CardContent, Button,
   TextField, Alert, Radio, RadioGroup, FormControlLabel, FormControl
 } from '@mui/material';
+import * as THREE from 'three';
+import WAVES from 'vanta/dist/vanta.waves.min';
 import axios from 'axios';
 import './../../styles/HR/Employee.css';
 
@@ -21,6 +23,33 @@ const EmployeeManagerList = () => {
   const [feedbackMessage, setFeedbackMessage] = useState('');
   const [error, setError] = useState('');
   const [selectedOption, setSelectedOption] = useState('employee');
+
+  const vantaRef = useRef(null);
+  const [vantaEffect, setVantaEffect] = useState(null);
+
+  useEffect(() => {
+    if (!vantaEffect) {
+      setVantaEffect(
+        WAVES({
+          el: vantaRef.current,
+          THREE: THREE,
+          mouseControls: true,
+          touchControls: true,
+          minHeight: 600.0,
+          minWidth: 800.0,
+          scale: 1.0,
+          scaleMobile: 1.0,
+          color: 0x211f31,
+          shininess: 60,
+          waveSpeed: 1.2,
+          zoom: 1.0,
+        })
+      );
+    }
+    return () => {
+      if (vantaEffect) vantaEffect.destroy();
+    };
+  }, [vantaEffect]);
 
   useEffect(() => {
     fetchData();
@@ -71,7 +100,7 @@ const EmployeeManagerList = () => {
     const item = selectedOption === 'employee'
       ? employees.find(emp => emp.id === id)
       : managers.find(mgr => mgr.id === id);
-    
+
     setIsEditing(id);
     setEditFormData({
       name: item.name,
@@ -93,32 +122,20 @@ const EmployeeManagerList = () => {
       ? `http://localhost:8080/user/edit/${isEditing}`
       : `http://localhost:8080/manager/edit/${isEditing}`;
 
-    const data = {
-      name: editFormData.name,
-      email: editFormData.email,
-      phone: editFormData.phone,
-      role: editFormData.role,
-      username: editFormData.username,
-      password: editFormData.password
-    };
-
-    axios.put(url, data)
+    axios.put(url, editFormData)
       .then(() => {
         const updatedList = selectedOption === 'employee'
-          ? employees.map(employee => employee.id === isEditing ? { ...employee, ...editFormData } : employee)
-          : managers.map(manager => manager.id === isEditing ? { ...manager, ...editFormData } : manager);
+          ? employees.map(emp => emp.id === isEditing ? { ...emp, ...editFormData } : emp)
+          : managers.map(mgr => mgr.id === isEditing ? { ...mgr, ...editFormData } : mgr);
 
-        if (selectedOption === 'employee') {
-          setEmployees(updatedList);
-        } else {
-          setManagers(updatedList);
-        }
+        if (selectedOption === 'employee') setEmployees(updatedList);
+        else setManagers(updatedList);
 
         setIsEditing(null);
         setFeedbackMessage(`${selectedOption.charAt(0).toUpperCase() + selectedOption.slice(1)} details updated successfully!`);
         setError('');
       })
-      .catch((err) => {
+      .catch(err => {
         console.error('Error updating:', err);
         setError(`Failed to update ${selectedOption}. ${err.message}`);
       });
@@ -143,156 +160,60 @@ const EmployeeManagerList = () => {
   const displayList = selectedOption === 'employee' ? employees : managers;
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <Box sx={{ flexGrow: 1, p: 3 }}>
-        <Paper elevation={3} sx={{ padding: 3 }}>
-          <Typography variant="h4" align="center" gutterBottom color="black">
-            {selectedOption.charAt(0).toUpperCase() + selectedOption.slice(1)} List
-          </Typography>
-        </Paper>
+    <Box sx={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden', zIndex: 0 }}>
+      {/* Vanta background */}
+      <div ref={vantaRef} style={{ position: 'absolute', width: '100%', height: '100%', zIndex: 0 }} />
+      <br></br>
+      {/* Main content */}
+      <Box sx={{ position: 'relative', zIndex: 1, p: { xs:2, sm:3, md:5 }, width: '100%', height: '100%', overflowY: 'auto' }}>
+        <Typography
+          variant="h3"
+          align="center"
+          sx={{ fontWeight: 'bold', letterSpacing: 2, mb:4, color:'white', textShadow:'0 2px 8px #1a1a2a' }}
+        >
+          <br></br>
+          {selectedOption.charAt(0).toUpperCase() + selectedOption.slice(1)} List
+        </Typography>
 
-        <FormControl component="fieldset" sx={{ mt: 2 }}>
-          <RadioGroup
-            row
-            aria-label="employee-manager"
-            name="employee-manager"
-            value={selectedOption}
-            onChange={handleOptionChange}
-          >
-            <FormControlLabel 
-              value="employee" 
-              control={<Radio />} 
-              label="Employee" 
-              sx={{ color: 'black' }} // Set text color to black
-            />
-            <FormControlLabel 
-              value="manager" 
-              control={<Radio />} 
-              label="Manager" 
-              sx={{ color: 'black' }} // Set text color to black
-            />
+        <FormControl component="fieldset" sx={{ mt:2 }}>
+          <RadioGroup row aria-label="employee-manager" name="employee-manager" value={selectedOption} onChange={handleOptionChange}>
+            <FormControlLabel value="employee" control={<Radio sx={{ color: 'white' }} />} label="Employee" />
+            <FormControlLabel value="manager" control={<Radio sx={{ color: 'white' }} />} label="Manager" />
           </RadioGroup>
         </FormControl>
 
-        {feedbackMessage && (
-          <Alert severity="success" sx={{ mt: 2 }}>
-            {feedbackMessage}
-          </Alert>
-        )}
+        {feedbackMessage && <Alert severity="success" sx={{ mt:2 }}>{feedbackMessage}</Alert>}
+        {error && <Alert severity="error" sx={{ mt:2 }}>{error}</Alert>}
 
-        {error && (
-          <Alert severity="error" sx={{ mt: 2 }}>
-            {error}
-          </Alert>
-        )}
-
-        <Box sx={{ maxHeight: '400px', overflow: 'auto', mt: 3 }}>
+        <Box sx={{ mt:3 }}>
           <Grid container spacing={3}>
             {displayList.map(item => (
-              <Grid item xs={12} sm={4} md={4} key={item.id}>
-                <Card elevation={3} sx={{ transition: 'transform 0.3s ease, box-shadow 0.3s ease' }}>
+              <Grid item xs={12} sm={6} md={4} key={item.id}>
+                <Card className="dashboard-card" elevation={8}>
                   <CardContent>
                     {isEditing === item.id ? (
                       <>
-                        <TextField
-                          fullWidth
-                          label="Name"
-                          name="name"
-                          value={editFormData.name}
-                          onChange={handleChange}
-                          margin="normal"
-                        />
-                        <TextField
-                          fullWidth
-                          label="Email"
-                          name="email"
-                          value={editFormData.email}
-                          onChange={handleChange}
-                          margin="normal"
-                          type="email"
-                        />
-                        <TextField
-                          fullWidth
-                          label="Phone"
-                          name="phone"
-                          value={editFormData.phone}
-                          onChange={handleChange}
-                          margin="normal"
-                        />
-                        <TextField
-                          fullWidth
-                          label="Role"
-                          name="role"
-                          value={editFormData.role}
-                          onChange={handleChange}
-                          margin="normal"
-                        />
-                        <TextField
-                          fullWidth
-                          label="Username"
-                          name="username"
-                          value={editFormData.username}
-                          onChange={handleChange}
-                          margin="normal"
-                        />
-                        <TextField
-                          fullWidth
-                          label="Password"
-                          name="password"
-                          value={editFormData.password}
-                          onChange={handleChange}
-                          margin="normal"
-                          type="password"
-                        />
-                        <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
-                          <Button
-                            variant="contained"
-                            color="success"
-                            onClick={handleSave}
-                          >
-                            Save
-                          </Button>
-                          <Button
-                            variant="contained"
-                            color="error"
-                            onClick={handleCancel}
-                          >
-                            Cancel
-                          </Button>
+                        <TextField fullWidth label="Name" name="name" value={editFormData.name} onChange={handleChange} margin="normal" sx={{ input:{ color:'white' }, label:{ color:'white' } }} />
+                        <TextField fullWidth label="Email" name="email" value={editFormData.email} onChange={handleChange} margin="normal" type="email" sx={{ input:{ color:'white' }, label:{ color:'white' } }} />
+                        <TextField fullWidth label="Phone" name="phone" value={editFormData.phone} onChange={handleChange} margin="normal" sx={{ input:{ color:'white' }, label:{ color:'white' } }} />
+                        <TextField fullWidth label="Role" name="role" value={editFormData.role} onChange={handleChange} margin="normal" sx={{ input:{ color:'white' }, label:{ color:'white' } }} />
+                        <TextField fullWidth label="Username" name="username" value={editFormData.username} onChange={handleChange} margin="normal" sx={{ input:{ color:'white' }, label:{ color:'white' } }} />
+                        <TextField fullWidth label="Password" name="password" value={editFormData.password} onChange={handleChange} margin="normal" type="password" sx={{ input:{ color:'white' }, label:{ color:'white' } }} />
+                        <Box sx={{ mt:2, display:'flex', gap:2 }}>
+                          <Button variant="contained" sx={{ fontWeight:'bold', backgroundColor:'#00bcd4', '&:hover':{backgroundColor:'#00acc1'} }} onClick={handleSave}>Save</Button>
+                          <Button variant="contained" color="error" sx={{ fontWeight:'bold' }} onClick={handleCancel}>Cancel</Button>
                         </Box>
                       </>
                     ) : (
                       <>
-                        <Typography variant="h6" color="black">
-                          {item.name}
-                        </Typography>
-                        <Typography variant="body2" color="black">
-                          <strong>Email:</strong> {item.email}
-                        </Typography>
-                        <Typography variant="body2" color="black">
-                          <strong>Phone:</strong> {item.phone}
-                        </Typography>
-                        <Typography variant="body2" color="black">
-                          <strong>Role:</strong> {item.role}
-                        </Typography>
-                        <Typography variant="body2" color="black">
-                          <strong>Username:</strong> {item.username}
-                        </Typography>
-                        <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => handleEdit(item.id)}
-                          >
-                            Edit
-                          </Button>
-                          <Button
-                            variant="contained"
-                            color="error"
-                            onClick={() => handleDelete(item.id)}
-                          >
-                            Delete
-                          </Button>
+                        <Typography variant="h6" sx={{ color:'white', fontWeight:'bold' }}>{item.name}</Typography>
+                        <Typography variant="body2" sx={{ color:'white', opacity:0.9 }}><strong>Email:</strong> {item.email}</Typography>
+                        <Typography variant="body2" sx={{ color:'white', opacity:0.9 }}><strong>Phone:</strong> {item.phone}</Typography>
+                        <Typography variant="body2" sx={{ color:'white', opacity:0.9 }}><strong>Role:</strong> {item.role}</Typography>
+                        <Typography variant="body2" sx={{ color:'white', opacity:0.9 }}><strong>Username:</strong> {item.username}</Typography>
+                        <Box sx={{ mt:2, display:'flex', gap:2 }}>
+                          <Button variant="contained" sx={{ fontWeight:'bold', backgroundColor:'#00bcd4', '&:hover':{backgroundColor:'#00acc1'} }} onClick={() => handleEdit(item.id)}>Edit</Button>
+                          <Button variant="contained" color="error" sx={{ fontWeight:'bold' }} onClick={() => handleDelete(item.id)}>Delete</Button>
                         </Box>
                       </>
                     )}

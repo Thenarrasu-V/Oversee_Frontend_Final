@@ -14,7 +14,6 @@ import * as THREE from 'three';
 import WAVES from 'vanta/dist/vanta.waves.min';
 import '../../styles/HR/HRDashboard.css';
 
-
 const HRDashboard = () => {
   const [formData, setFormData] = useState({ name: '', department: '', role: '' });
   const [errors, setErrors] = useState({});
@@ -58,6 +57,7 @@ const HRDashboard = () => {
   ];
 
   return (
+    
     <Box sx={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden', zIndex: 0 }}>
       {/* Vanta background */}
       <div ref={vantaRef} style={{ position: 'absolute', width: '100%', height: '100%', zIndex: 0 }} />

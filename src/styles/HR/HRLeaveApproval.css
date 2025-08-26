@@ -1,65 +1,44 @@
 body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  display: flex;
-  overflow: hidden;
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #e0e0e0;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    background: #23243a;
+    color: white;
+    overflow: hidden;
 }
 
-.sidebar {
-  background-color: #e0e0e0;
+/* Force all Cards and Paper transparent */
+.MuiPaper-root,
+.MuiCard-root {
+    border-radius: 16px !important;
+    background: transparent !important;
+    color: white !important;
+    border: none !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-h1, h2, p, blockquote {
-  color: black;
+/* Hover effect */
+.dashboard-card:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 12px 32px rgba(0, 255, 200, 0.35) !important; /* glowing cyan */
+    cursor: pointer;
 }
 
-.dashboard-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
+/* Buttons */
+.MuiButton-root {
+    font-weight: bold !important;
 }
 
-.dashboard-content {
-  display: flex;
-  flex: 1;
-  padding: 20px;
-  overflow: hidden;
-  justify-content: center;
-  align-items: center;
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
 }
-
-.dashboard-main-content {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 20px;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-  width: 80%;
-  place-items: center;
-  position: fixed;
-  left: 290px;
+::-webkit-scrollbar-track {
+    background: #212133;
 }
-
-.flex-item {
-  padding: 15px;
-  width: 400px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-}
-
-@media (max-width: 768px) {
-  .dashboard-main-content {
-      grid-template-columns: 1fr;
-      grid-gap: 10px;
-  }
-
-  .flex-item {
-      margin: 0;
-  }
+::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border-radius: 10px;
+    border: 2px solid #23243a;
 }

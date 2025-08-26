@@ -1,53 +1,53 @@
-body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  font-family: 'Roboto', Arial, Helvetica, sans-serif;
-  background: #23243a;
-  color: white;
-  overflow: hidden;
-}
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    background: #23243a;
+    color: white;
+    overflow: hidden;
+  }
 
-/* Force all Cards and Paper transparent */
-.MuiPaper-root,
-.MuiCard-root {
-  border-radius: 16px !important;
-  background: transparent !important;
-  color: white !important;
-  border: none !important;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+  /* Force all Cards and Paper transparent */
+  .MuiPaper-root,
+  .MuiCard-root {
+    border-radius: 16px !important;
+    background: transparent !important;
+    color: white !important;
+    border: none !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
 
-/* Hover effect */
-.dashboard-card:hover {
-  transform: translateY(-6px) scale(1.03);
-  box-shadow: 0 12px 32px rgba(0, 255, 200, 0.35) !important; /* glowing cyan */
-  cursor: pointer;
-}
+  /* Hover effect */
+  .dashboard-card:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 12px 32px rgba(0, 255, 200, 0.35) !important; /* glowing cyan */
+    cursor: pointer;
+  }
 
-/* Text inputs */
-.MuiFilledInput-root {
-  background-color: rgba(255,255,255,0.05) !important;
-  color: white !important;
-}
-.MuiInputBase-input,
-.MuiInputLabel-root {
-  color: white !important;
-}
+  /* Text inputs */
+  .MuiFilledInput-root {
+    background-color: rgba(255,255,255,0.05) !important;
+    color: white !important;
+  }
+  .MuiInputBase-input,
+  .MuiInputLabel-root {
+    color: white !important;
+  }
 
-/* Buttons */
-.MuiButton-root {
-  font-weight: bold !important;
-}
+  /* Buttons */
+  .MuiButton-root {
+    font-weight: bold !important;
+  }
 
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #212133;
-}
-::-webkit-scrollbar-thumb {
-  background-color: #444;
-  border-radius: 10px;
-  border: 2px solid #23243a;
-}
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #212133;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border-radius: 10px;
+    border: 2px solid #23243a;
+  }
